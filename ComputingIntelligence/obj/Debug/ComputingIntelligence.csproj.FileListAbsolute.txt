@@ -1,0 +1,7 @@
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\bin\Debug\ComputingIntelligence.exe.config
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\bin\Debug\ComputingIntelligence.exe
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\bin\Debug\ComputingIntelligence.pdb
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.csprojAssemblyReference.cache
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.csproj.CoreCompileInputs.cache
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.exe
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.pdb
