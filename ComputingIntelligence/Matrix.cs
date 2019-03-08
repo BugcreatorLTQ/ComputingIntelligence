@@ -222,7 +222,7 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 获取转置矩阵
+        /// 矩阵转置
         /// </summary>
         /// <returns>转置后的矩阵</returns>
         public Matrix GetT()
@@ -251,9 +251,9 @@ namespace ComputingIntelligence
             {
                 for (int j = 0; j < Column; j++) {
                     stringBuilder.Append(Data[i * Column + j]);
-                    stringBuilder.Append(' ');
+                    if (j < Column - 1) stringBuilder.Append(' ');
                 }
-                stringBuilder.Append('\n');
+                if (i < Row - 1) stringBuilder.Append('\n');
             }
             return stringBuilder.ToString();
         }

@@ -9,7 +9,7 @@ namespace ComputingIntelligence
     /// <summary>
     /// 神经网络
     /// </summary>
-    class NeuralNet
+    class SingleNeuralNetwork
     {
         /// <summary>
         /// 输入矩阵
@@ -41,19 +41,21 @@ namespace ComputingIntelligence
         /// <summary>
         /// 定义神经元函数
         /// </summary>
-        public Function function;
+        public Function Fun { get; set; }
 
         /// <summary>
         /// 创建一个神经网络
         /// </summary>
         /// <param name="input">输入矩阵</param>
         /// <param name="output">输出矩阵</param>
-        public NeuralNet(Matrix input, Matrix output)
+        public SingleNeuralNetwork(Matrix input, Matrix output)
         {
             Input = input;
             Output = output;
             // 生成权重矩阵
             Weights = Matrix.GetRandomMatrix(output.Row, input.Row);
+            // 生成阈值矩阵
+            Threshold = Matrix.GetRandomMatrix(output.Row, output.Column);
         }
 
         /// <summary>
@@ -62,34 +64,48 @@ namespace ComputingIntelligence
         /// <param name="error">计算误差</param>
         private void FixWeights(Matrix error)
         {
-            Weights += 0.9f * error * Input;
+            // 修正权重矩阵
+            Weights += 0.9f * error * Input.GetT();
+            // 修正阈值矩阵
             Threshold += 0.9f * error;
         }
 
         /// <summary>
         /// 训练网络
         /// </summary>
-        public void Training()
+        /// <param name="times">训练次数</param>
+        public void Training(int times)
         {
-            // 训练次数
-            int times = 50;
             // 用于结果矩阵
-            Matrix outMat = new Matrix(Output.Row, Output.Column);
-            Matrix errMat = new Matrix(Output.Row, Output.Column);
+            Matrix outMat;
+            Matrix errMat;
             while (times-- > 0)
             {
                 // 判断函数是否为空
-                if (function == null)
+                if (Fun == null)
                 {
                     throw new Exception("神经元函数为空");
                 }
                 // 计算输出
-                outMat = function(Weights * Input + Threshold);
+                outMat = GetResult(Input);
                 // 计算误差
-                errMat = (outMat - Output);
+                errMat = (Output - outMat);
+                Console.WriteLine(Weights);
                 // 修正权重
+                FixWeights(errMat);
             }
         }
+
+        /// <summary>
+        /// 获取计算结果
+        /// </summary>
+        /// <param name="input">输入矩阵</param>
+        /// <returns>结果矩阵</returns>
+        public Matrix GetResult(Matrix input)
+        {
+            return Fun(Weights * input + Threshold);
+        }
+
     }
 }
 

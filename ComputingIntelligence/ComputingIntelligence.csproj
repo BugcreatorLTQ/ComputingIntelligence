@@ -37,7 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Matrix.cs" />
-    <Compile Include="NeuralNet.cs" />
+    <Compile Include="MatrixFileIO.cs" />
+    <Compile Include="SingleNeuralNetwork.cs" />
     <Compile Include="Run.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
