@@ -14,12 +14,12 @@ namespace ComputingIntelligence
     class Matrix
     {
         /// <summary>
-        /// 矩阵的列
+        /// 矩阵的行
         /// </summary>
         public int Row { get; set; }
 
         /// <summary>
-        /// 矩阵的行
+        /// 矩阵的列
         /// </summary>
         public int Column { get; set; }
 
@@ -67,7 +67,8 @@ namespace ComputingIntelligence
             // 对属性重新赋值
             Row = row;
             Column = column;
-            Data = data;
+            Data = new float[data.Length];
+            data.CopyTo(Data, 0);
         }
 
         /// <summary>
@@ -218,6 +219,25 @@ namespace ComputingIntelligence
         public static Matrix operator*(float num, Matrix A)
         {
             return A * num;
+        }
+
+        /// <summary>
+        /// 获取转置矩阵
+        /// </summary>
+        /// <returns>转置后的矩阵</returns>
+        public Matrix GetT()
+        {
+            Matrix matrix = new Matrix(Column, Row);
+            // 第i行
+            for(int i = 0; i < Column; i++)
+            {
+                // 第j列
+                for(int j = 0; j < Row; j++)
+                {
+                    matrix.Data[i * Row + j] = Data[j * Column + i];
+                }
+            }
+            return matrix;
         }
 
         /// <summary>
