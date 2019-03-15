@@ -55,17 +55,18 @@ namespace ComputingIntelligence
             // 生成权重矩阵
             Weights = Matrix.GetRandomMatrix(output.Row, input.Row);
             // 生成阈值矩阵
-            Threshold = Matrix.GetRandomMatrix(output.Row, output.Column);
+            Threshold = Matrix.GetRandomMatrix(output.Row, 1);
         }
 
         /// <summary>
         /// 修正权重矩阵
         /// </summary>
+        /// <param name="input">输入矩阵</param>
         /// <param name="error">计算误差</param>
-        private void FixWeights(Matrix error)
+        private void FixWeights(Matrix input, Matrix error)
         {
             // 修正权重矩阵
-            Weights += 0.9f * error * Input.GetT();
+            Weights += 0.9f * error * input.GetT();
             // 修正阈值矩阵
             Threshold += 0.9f * error;
         }
@@ -79,20 +80,32 @@ namespace ComputingIntelligence
             // 用于结果矩阵
             Matrix outMat;
             Matrix errMat;
-            while (times-- > 0)
+            // 输入矩阵数组
+            Matrix[] input = Input.GetDatas();
+            // 输出矩阵数组
+            Matrix[] output = Output.GetDatas();
+            // 判断函数是否为空
+            if (Fun == null)
             {
-                // 判断函数是否为空
-                if (Fun == null)
+                throw new Exception("神经元函数为空");
+            }
+            // 用第i对输入输出进行训练
+            for (int i = 0; i < Input.Column; i++)
+            {
+                // 训练times次
+                while (times-- > 0)
                 {
-                    throw new Exception("神经元函数为空");
+                    // 计算输出
+                    outMat = GetResult(input[i]);
+                    // 计算误差
+                    errMat = (output[i] - outMat);
+                    // 输出权重矩阵
+                    Console.WriteLine("权重：" + Weights);
+                    // 输出误差矩阵
+                    Console.WriteLine("误差：" + errMat);
+                    // 修正权重
+                    FixWeights(input[i], errMat);
                 }
-                // 计算输出
-                outMat = GetResult(Input);
-                // 计算误差
-                errMat = (Output - outMat);
-                Console.WriteLine(Weights);
-                // 修正权重
-                FixWeights(errMat);
             }
         }
 

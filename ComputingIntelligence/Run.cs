@@ -36,9 +36,15 @@ namespace ComputingIntelligence
             // 添加函数委托
             network.Fun += fun;
             // 训练
-            network.Training(100);
+            network.Training(50);
             // 保存权重矩阵
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
+            // 测试结果
+            Matrix[] testInput = input.GetDatas();
+            for (int i = 0; i < input.Column; i++)
+            {
+                Console.WriteLine(network.GetResult(testInput[i]));
+            }
         }
     }
 }

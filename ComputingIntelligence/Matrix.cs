@@ -170,7 +170,15 @@ namespace ComputingIntelligence
         public static Matrix operator*(Matrix A,Matrix B)
         {
             // 检查维度
-            if(A.Column != B.Row)
+            if (A.Column == 1 && A.Row == 1)
+            {
+                return A.Data[0] * B;
+            }
+            if (B.Column == 1 && B.Row == 1)
+            {
+                return B.Data[0] * A;
+            }
+            if (A.Column != B.Row)
             {
                 throw new Exception("矩阵乘法异常：矩阵维度不一致");
             }
@@ -256,6 +264,27 @@ namespace ComputingIntelligence
                 if (i < Row - 1) stringBuilder.Append('\n');
             }
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// 获取每列的子矩阵
+        /// </summary>
+        /// <returns>子矩阵数组</returns>
+        public Matrix[] GetDatas()
+        {
+            Matrix[] matrixs = new Matrix[Column];
+            for(int i = 0; i< Column; i++)
+            {
+                float[] data = new float[Row];
+                // 第i列
+                for(int j = 0; j < Row; j++)
+                {
+                    // 第j行
+                    data[j] = Data[j * Row + i];
+                }
+                matrixs[i] = new Matrix(Row, 1, data);
+            }
+            return matrixs;
         }
 
     }
