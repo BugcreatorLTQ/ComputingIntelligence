@@ -20,12 +20,18 @@ namespace ComputingIntelligence
             Matrix result = new Matrix(matrix.Row, matrix.Column);
             for(int i = 0; i < result.Data.Length; i++)
             {
-                result.Data[i] = result.Data[i] > 0.5f ? 1 : 0;
+                result.Data[i] = (matrix.Data[i] > 0) ? 1 : 0;
             }
             return result;
         }
 
         public static void Main(string[] args)
+        {
+            //Run.Test();
+            Run.Start();
+        }
+
+        static void Start()
         {
             // 读取输入矩阵
             Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
@@ -34,17 +40,26 @@ namespace ComputingIntelligence
             // 创建单层神经网络
             SingleNeuralNetwork network = new SingleNeuralNetwork(input, output);
             // 添加函数委托
-            network.Fun += fun;
+            network.Fun += (e) => { return e * 0.1f; };
             // 训练
-            network.Training(50);
-            // 保存权重矩阵
+            network.Training(100);
+            // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
             // 测试结果
             Matrix[] testInput = input.GetDatas();
             for (int i = 0; i < input.Column; i++)
             {
-                Console.WriteLine(network.GetResult(testInput[i]));
+                Console.Write(network.GetResult(testInput[i]) + "\n\n");
             }
         }
+
+        static void Test()
+        {
+            float[] data = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            Matrix A = new Matrix(2, 4, data);
+            Console.WriteLine(fun(A));
+        }
+
+
     }
 }

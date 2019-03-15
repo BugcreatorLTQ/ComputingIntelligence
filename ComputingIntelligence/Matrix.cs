@@ -85,7 +85,7 @@ namespace ComputingIntelligence
             for(int i = 0; i < data.Length; i++)
             {
                 // 获取随机数
-                data[i] = (float)random.NextDouble();
+                data[i] = (float)random.NextDouble() * 2 - 1;
             }
             // 创建随机数组
             Matrix randomMatrix = new Matrix(row, column,data);
@@ -280,11 +280,25 @@ namespace ComputingIntelligence
                 for(int j = 0; j < Row; j++)
                 {
                     // 第j行
-                    data[j] = Data[j * Row + i];
+                    data[j] = Data[j * Column + i];
                 }
                 matrixs[i] = new Matrix(Row, 1, data);
             }
             return matrixs;
+        }
+
+        /// <summary>
+        /// 获取绝对值矩阵
+        /// </summary>
+        /// <returns>绝对值矩阵</returns>
+        public Matrix GetAbs()
+        {
+            Matrix matrix = Clone(this);
+            for(int i = 0; i < Data.Length; i++)
+            {
+                matrix.Data[i] = Math.Abs(matrix.Data[i]);
+            }
+            return matrix;
         }
 
     }

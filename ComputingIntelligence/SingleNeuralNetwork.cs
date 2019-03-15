@@ -66,9 +66,9 @@ namespace ComputingIntelligence
         private void FixWeights(Matrix input, Matrix error)
         {
             // 修正权重矩阵
-            Weights += 0.9f * error * input.GetT();
+            Weights += 0.5f * error * input.GetT();
             // 修正阈值矩阵
-            Threshold += 0.9f * error;
+            Threshold += 0.5f * error;
         }
 
         /// <summary>
@@ -89,23 +89,29 @@ namespace ComputingIntelligence
             {
                 throw new Exception("神经元函数为空");
             }
-            // 用第i对输入输出进行训练
-            for (int i = 0; i < Input.Column; i++)
+            // 训练times次
+            while (times-- > 0)
             {
-                // 训练times次
-                while (times-- > 0)
+                // 累计误差矩阵
+                Matrix errSum = new Matrix(Output.Row, 1);
+                // 用第i对输入输出进行训练
+                for (int i = 0; i < Input.Column; i++)
                 {
                     // 计算输出
                     outMat = GetResult(input[i]);
-                    // 计算误差
+                    // 计算误差 (理想减输出)
                     errMat = (output[i] - outMat);
+                    // 计算累计误差
+                    errSum += errMat.GetAbs();
                     // 输出权重矩阵
-                    Console.WriteLine("权重：" + Weights);
+                    Console.WriteLine("权重\n" + Weights);
                     // 输出误差矩阵
-                    Console.WriteLine("误差：" + errMat);
+                    Console.WriteLine("误差\n" + errMat);
                     // 修正权重
                     FixWeights(input[i], errMat);
                 }
+                // 输出累计误差
+                Console.WriteLine("累计误差\n" + errSum);
             }
         }
 
@@ -116,6 +122,7 @@ namespace ComputingIntelligence
         /// <returns>结果矩阵</returns>
         public Matrix GetResult(Matrix input)
         {
+            // 权重×输入+阈值
             return Fun(Weights * input + Threshold);
         }
 
