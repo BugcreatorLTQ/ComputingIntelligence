@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="input">输入矩阵</param>
         /// <param name="error">计算误差</param>
-        private void FixWeights(Matrix input, Matrix error)
+        public void FixWeights(Matrix input, Matrix error)
         {
             // 修正权重矩阵
             Weights += 0.5f * error * input.GetT();
@@ -77,9 +78,17 @@ namespace ComputingIntelligence
         /// <param name="times">训练次数</param>
         public void Training(int times)
         {
-            // 用于结果矩阵
-            Matrix outMat;
+            // 用于创建误差文件
+            FileStream outStream = new FileStream("Error.txt", FileMode.Create);
+            outStream.Close();
+            // 打开文件
+            outStream = new FileStream("Error.txt", FileMode.Append);
+            // 包装为writer
+            StreamWriter writer = new StreamWriter(outStream);
+            // 误差矩阵
             Matrix errMat;
+            // 结果矩阵
+            Matrix result;
             // 输入矩阵数组
             Matrix[] input = Input.GetDatas();
             // 输出矩阵数组
@@ -92,27 +101,23 @@ namespace ComputingIntelligence
             // 训练times次
             while (times-- > 0)
             {
-                // 累计误差矩阵
-                Matrix errSum = new Matrix(Output.Row, 1);
                 // 用第i对输入输出进行训练
                 for (int i = 0; i < Input.Column; i++)
                 {
                     // 计算输出
-                    outMat = GetResult(input[i]);
+                    result = GetResult(input[i]);
                     // 计算误差 (理想减输出)
-                    errMat = (output[i] - outMat);
-                    // 计算累计误差
-                    errSum += errMat.GetAbs();
-                    // 输出权重矩阵
-                    Console.WriteLine("权重\n" + Weights);
-                    // 输出误差矩阵
-                    Console.WriteLine("误差\n" + errMat);
+                    errMat = output[i] - result;
                     // 修正权重
                     FixWeights(input[i], errMat);
+                    // 输出误差
+                    Console.WriteLine("误差：\n" + errMat + "\n");
+                    // 向文件写入数据
+                    writer.WriteLine(errMat);
                 }
-                // 输出累计误差
-                Console.WriteLine("累计误差\n" + errSum);
             }
+            // 关闭流
+            writer.Close();
         }
 
         /// <summary>

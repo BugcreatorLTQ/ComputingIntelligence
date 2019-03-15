@@ -249,24 +249,6 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 转换为字符串
-        /// </summary>
-        /// <returns>转化的字符串</returns>
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(int i = 0; i < Row; i++)
-            {
-                for (int j = 0; j < Column; j++) {
-                    stringBuilder.Append(Data[i * Column + j]);
-                    if (j < Column - 1) stringBuilder.Append(' ');
-                }
-                if (i < Row - 1) stringBuilder.Append('\n');
-            }
-            return stringBuilder.ToString();
-        }
-
-        /// <summary>
         /// 获取每列的子矩阵
         /// </summary>
         /// <returns>子矩阵数组</returns>
@@ -299,6 +281,25 @@ namespace ComputingIntelligence
                 matrix.Data[i] = Math.Abs(matrix.Data[i]);
             }
             return matrix;
+        }
+
+        /// <summary>
+        /// 转换为字符串
+        /// </summary>
+        /// <returns>转化的字符串</returns>
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int i = 0; i < Row; i++)
+            {
+                for (int j = 0; j < Column; j++) {
+                    stringBuilder.Append(Data[i * Column + j]);
+                    if (j < Column - 1) stringBuilder.Append(' ');
+                }
+                //if (i < Row - 1)
+                stringBuilder.Append('\n');
+            }
+            return stringBuilder.ToString();
         }
 
     }

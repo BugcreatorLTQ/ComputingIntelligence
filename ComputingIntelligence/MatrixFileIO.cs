@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ComputingIntelligence
 {
+
     static class MatrixFileIO
     {
         /// <summary>
@@ -14,7 +15,7 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="filePath">文件名</param>
         /// <returns>读取的矩阵</returns>
-        public static Matrix ReadMatrixOfFile(String filePath)
+        public static Matrix ReadMatrixOfFile(string filePath)
         {
             // 提示信息
             Console.WriteLine("正在打开文件" + filePath);
@@ -60,14 +61,12 @@ namespace ComputingIntelligence
         }
            
         /// <summary>
-        /// 创建一个文件并将矩阵数据写入文件
+        /// 创建文件并将矩阵数据写入文件
         /// </summary>
         /// <param name="filePath">文件名</param>
         /// <param name="matrix">要写入的矩阵</param>
         public static void WriteMatrixToFile(String filePath, Matrix matrix)
         {
-            // 提示信息
-            Console.WriteLine("正在写入文件" + filePath);
             // 打开文件
             FileStream outStream = new FileStream(filePath, FileMode.Create);
             // 包装为writer
@@ -76,8 +75,6 @@ namespace ComputingIntelligence
             writer.WriteLine(matrix.ToString());
             // 关闭流
             writer.Close();
-            // 提示信息
-            Console.WriteLine("写入完毕");
         }
     }
 }
