@@ -27,11 +27,22 @@ namespace ComputingIntelligence
 
         public static void Main(string[] args)
         {
-            //Run.Test();
-            Run.Start();
+            Run.Test();
+            //Run.Start();
         }
 
+        /// <summary>
+        /// 运行模块
+        /// </summary>
         static void Start()
+        {
+
+        }
+
+        /// <summary>
+        /// 测试模块
+        /// </summary>
+        static void Test()
         {
             // 读取输入矩阵
             Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
@@ -42,7 +53,7 @@ namespace ComputingIntelligence
             // 添加函数委托
             network.Fun += (e) => { return e * 0.1f; };
             // 训练
-            network.Training(100);
+            network.Training(200);
             // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
             // 测试结果
@@ -51,13 +62,6 @@ namespace ComputingIntelligence
             {
                 Console.Write(network.GetResult(testInput[i]) + "\n\n");
             }
-        }
-
-        static void Test()
-        {
-            float[] data = { 1, 2, 3, 4, 5, 6, 7, 8 };
-            Matrix A = new Matrix(2, 4, data);
-            Console.WriteLine(fun(A));
         }
 
 
