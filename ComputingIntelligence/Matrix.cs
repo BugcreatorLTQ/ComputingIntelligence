@@ -249,10 +249,10 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 获取每列的子矩阵
+        /// 获取每列矩阵
         /// </summary>
         /// <returns>子矩阵数组</returns>
-        public Matrix[] GetDatas()
+        public Matrix[] GetColumns()
         {
             Matrix[] matrixs = new Matrix[Column];
             for(int i = 0; i< Column; i++)
@@ -267,6 +267,28 @@ namespace ComputingIntelligence
                 matrixs[i] = new Matrix(Row, 1, data);
             }
             return matrixs;
+        }
+
+        /// <summary>
+        /// 获取每行矩阵
+        /// </summary>
+        /// <returns>子矩阵数组</returns>
+        public Matrix[] GetRows()
+        {
+            Matrix[] matrixs = new Matrix[Row];
+            for (int i = 0; i < Row; i++)
+            {
+                float[] data = new float[Row];
+                // 第i行
+                for (int j = 0; j < Column; j++)
+                {
+                    // 第j列
+                    data[j] = Data[i * Column + j];
+                }
+                matrixs[i] = new Matrix(Column, 1, data);
+            }
+            return matrixs;
+
         }
 
         /// <summary>

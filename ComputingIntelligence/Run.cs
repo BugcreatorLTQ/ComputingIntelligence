@@ -53,8 +53,8 @@ namespace ComputingIntelligence
 
         public static void Main(string[] args)
         {
-            //Run.Test();
-            Run.Start();
+            Run.Test();
+            //Run.Start();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace ComputingIntelligence
             // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
             // 测试结果
-            Matrix[] testInput = input.GetDatas();
+            Matrix[] testInput = input.GetColumns();
             for (int i = 0; i < input.Column; i++)
             {
                 Console.Write(network.GetResult(testInput[i]) + "\n\n");

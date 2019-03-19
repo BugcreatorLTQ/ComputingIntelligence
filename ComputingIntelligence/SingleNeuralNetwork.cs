@@ -90,9 +90,9 @@ namespace ComputingIntelligence
             // 结果矩阵
             Matrix result;
             // 输入矩阵数组
-            Matrix[] input = Input.GetDatas();
+            Matrix[] input = Input.GetColumns();
             // 输出矩阵数组
-            Matrix[] output = Output.GetDatas();
+            Matrix[] output = Output.GetColumns();
             // 判断函数是否为空
             if (Fun == null)
             {

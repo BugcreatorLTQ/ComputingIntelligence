@@ -87,9 +87,9 @@ namespace ComputingIntelligence
             // 包装为writer
             StreamWriter writer = new StreamWriter(outStream);
             // 输入矩阵数组
-            Matrix[] input = Input.GetDatas();
+            Matrix[] input = Input.GetColumns();
             // 输出矩阵数组
-            Matrix[] output = Output.GetDatas();
+            Matrix[] output = Output.GetColumns();
             // 误差矩阵
             Matrix errMat;
             // 结果矩阵
