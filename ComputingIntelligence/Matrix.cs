@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace ComputingIntelligence
@@ -11,7 +8,7 @@ namespace ComputingIntelligence
     /// 矩阵类
     /// 提供矩阵的基本操作
     /// </summary>
-    class Matrix
+    public class Matrix
     {
         /// <summary>
         /// 矩阵的行
@@ -27,6 +24,16 @@ namespace ComputingIntelligence
         /// 矩阵的数据
         /// </summary>
         public float[] Data { get; set; }
+
+        /// <summary>
+        /// 获取转置矩阵
+        /// </summary>
+        public Matrix T { get { return GetT(); } }
+
+        /// <summary>
+        /// 获取绝对值矩阵
+        /// </summary>
+        public Matrix Abs { get { return GetAbs(); } }
 
         /// <summary>
         /// 创建一个空矩阵
@@ -169,21 +176,27 @@ namespace ComputingIntelligence
         /// <returns>运算后的矩阵</returns>
         public static Matrix operator*(Matrix A,Matrix B)
         {
+            Matrix matrix;
             // 检查维度
             if (A.Column == 1 && A.Row == 1)
             {
-                return A.Data[0] * B;
+                matrix = Clone(B);
+                for (int i = 0; i < matrix.Data.Length; i++)
+                {
+                    matrix.Data[i] *= A.Data[0];
+                }
+                return matrix;
             }
             if (B.Column == 1 && B.Row == 1)
             {
-                return B.Data[0] * A;
+                return B * A;
             }
             if (A.Column != B.Row)
             {
                 throw new Exception("矩阵乘法异常：矩阵维度不一致");
             }
             // 创建结果矩阵
-            Matrix matrix = new Matrix(A.Row, B.Column);
+            matrix = new Matrix(A.Row, B.Column);
             // 做矩阵乘法
             for(int i = 0; i < matrix.Row; i++)
             {
@@ -203,37 +216,20 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 矩阵乘法
+        /// 将一个数隐形传换为矩阵
         /// </summary>
-        /// <param name="A">运算矩阵</param>
-        /// <param name="num">运算常数</param>
-        /// <returns>运算后的矩阵</returns>
-        public static Matrix operator*(Matrix A, float num)
+        /// <param name="num">一个1*1的矩阵</param>
+        public static implicit operator Matrix(float num)
         {
-            Matrix matrix = Clone(A);
-            for (int i = 0; i < matrix.Data.Length; i++)
-            {
-                matrix.Data[i] *= num;
-            }
-            return matrix;
-        }
-
-        /// <summary>
-        /// 矩阵乘法
-        /// </summary>
-        /// <param name="num">运算常数</param>
-        /// <param name="A">运算矩阵</param>
-        /// <returns>运算后的矩阵</returns>
-        public static Matrix operator*(float num, Matrix A)
-        {
-            return A * num;
+            float[] data = { num };
+            return new Matrix(1, 1, data);
         }
 
         /// <summary>
         /// 矩阵转置
         /// </summary>
         /// <returns>转置后的矩阵</returns>
-        public Matrix GetT()
+        protected Matrix GetT()
         {
             Matrix matrix = new Matrix(Column, Row);
             // 第i行
@@ -278,14 +274,14 @@ namespace ComputingIntelligence
             Matrix[] matrixs = new Matrix[Row];
             for (int i = 0; i < Row; i++)
             {
-                float[] data = new float[Row];
+                float[] data = new float[Column];
                 // 第i行
                 for (int j = 0; j < Column; j++)
                 {
                     // 第j列
                     data[j] = Data[i * Column + j];
                 }
-                matrixs[i] = new Matrix(Column, 1, data);
+                matrixs[i] = new Matrix(1, Column, data);
             }
             return matrixs;
 
@@ -295,7 +291,7 @@ namespace ComputingIntelligence
         /// 获取绝对值矩阵
         /// </summary>
         /// <returns>绝对值矩阵</returns>
-        public Matrix GetAbs()
+        protected Matrix GetAbs()
         {
             Matrix matrix = Clone(this);
             for(int i = 0; i < Data.Length; i++)

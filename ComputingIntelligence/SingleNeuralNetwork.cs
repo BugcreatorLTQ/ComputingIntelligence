@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputingIntelligence
 {
@@ -67,7 +63,7 @@ namespace ComputingIntelligence
         public void FixWeights(Matrix input, Matrix error)
         {
             // 修正权重矩阵
-            Weights += 0.5f * error * input.GetT();
+            Weights += 0.5f * error * input.T;
             // 修正阈值矩阵
             Threshold += 0.5f * error;
         }
@@ -86,9 +82,9 @@ namespace ComputingIntelligence
             // 包装为writer
             StreamWriter writer = new StreamWriter(outStream);
             // 误差矩阵
-            Matrix errMat;
+            Matrix errMat = null;
             // 结果矩阵
-            Matrix result;
+            Matrix result = null;
             // 输入矩阵数组
             Matrix[] input = Input.GetColumns();
             // 输出矩阵数组
@@ -110,11 +106,11 @@ namespace ComputingIntelligence
                     errMat = output[i] - result;
                     // 修正权重
                     FixWeights(input[i], errMat);
-                    // 输出误差
-                    Console.WriteLine("误差：\n" + errMat + "\n");
-                    // 向文件写入数据
-                    writer.WriteLine(errMat);
                 }
+                // 向文件写入数据
+                writer.Write(errMat.T);
+                // 输出误差
+                Console.WriteLine("误差：\n" + errMat + "\n");
             }
             // 关闭流
             writer.Close();

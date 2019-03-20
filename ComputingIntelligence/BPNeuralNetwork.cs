@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ComputingIntelligence.SingleNeuralNetwork;
 
 namespace ComputingIntelligence
@@ -66,7 +62,7 @@ namespace ComputingIntelligence
         public void FixWeights(Matrix input, Matrix error)
         {
             // 计算隐含层误差
-            Matrix errHide = HO.Weights.GetT() * error;
+            Matrix errHide = HO.Weights.T * error;
             // 修正HO网络
             HO.FixWeights(IH.GetResult(input), error);
             // 修正IO网络

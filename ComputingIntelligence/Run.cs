@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Windows.Forms;
 
 namespace ComputingIntelligence
 {
@@ -50,11 +50,15 @@ namespace ComputingIntelligence
             return result;
         }
 
-
+        /// <summary>
+        /// 运行主函数
+        /// </summary>
+        /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            Run.Test();
             //Run.Start();
+            Run.Demo();
+            //Run.Test();
         }
 
         /// <summary>
@@ -74,9 +78,9 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 测试模块
+        /// 演示模块
         /// </summary>
-        static void Test()
+        static void Demo()
         {
             // 读取输入矩阵
             Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
@@ -94,10 +98,25 @@ namespace ComputingIntelligence
             Matrix[] testInput = input.GetColumns();
             for (int i = 0; i < input.Column; i++)
             {
-                Console.Write(network.GetResult(testInput[i]) + "\n\n");
+                Console.WriteLine(network.GetResult(testInput[i]) + "\n");
             }
+            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
         }
 
+        /// <summary>
+        /// 测试模块
+        /// </summary>
+        static void Test()
+        {
+
+            // 读取输入矩阵
+            Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
+            Console.WriteLine(input);
+            foreach(Matrix x in input.GetRows())
+            {
+                Console.WriteLine(x);
+            }
+        }
 
     }
 }

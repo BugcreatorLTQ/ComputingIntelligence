@@ -5,3 +5,5 @@ C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug
 C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.csproj.CoreCompileInputs.cache
 C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.exe
 C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.pdb
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.DrawForm.resources
+C:\Users\Lain\source\repos\ComputingIntelligence\ComputingIntelligence\obj\Debug\ComputingIntelligence.csproj.GenerateResource.cache
