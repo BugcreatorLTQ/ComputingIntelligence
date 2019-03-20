@@ -94,11 +94,15 @@ namespace ComputingIntelligence
             network.Training(200);
             // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
+            // 保存阈值矩阵 
+            MatrixFileIO.WriteMatrixToFile("Threshold.txt", network.Threshold);
             // 测试结果
             Matrix[] testInput = input.GetColumns();
+            // 提示信息
+            Console.WriteLine("测试输入：");
             for (int i = 0; i < input.Column; i++)
             {
-                Console.WriteLine(network.GetResult(testInput[i]) + "\n");
+                Console.WriteLine(network.GetResult(testInput[i]));
             }
             Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
         }

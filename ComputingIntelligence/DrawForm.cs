@@ -6,6 +6,17 @@ namespace ComputingIntelligence
 {
     public partial class DrawForm : Form
     {
+
+        /// <summary>
+        /// 横坐标起点
+        /// </summary>
+        private int start_x = 10;
+
+        /// <summary>
+        /// 纵坐标起点
+        /// </summary>
+        private int start_y = 50;
+
         /// <summary>
         /// 绘制的数据
         /// </summary>
@@ -45,13 +56,17 @@ namespace ComputingIntelligence
             {
                 datas[i] = datas[i].Abs;
             }
+            // 绘制横坐标
+            g.DrawLine(Pens.Violet, new Point(0, this.Height - start_y), new Point(this.Width, this.Height - start_y));
+            // 绘制纵坐标
+            g.DrawLine(Pens.Violet, new Point(start_x, 0), new Point(start_x, this.Height));
             // 第i行
             for (int i = 0; i < Data.Row; i++)
             {
                 // 第j列
                 for (int j = 0; j < Data.Column; j++)
                 {
-                    Point A = new Point(Width / Data.Row * i, this.Height - (int)(datas[i].Data[j] * 500) - 50);
+                    Point A = new Point(Width / Data.Row * i + start_x, this.Height - (int)(datas[i].Data[j] * 500) - start_y);
                     Point B = new Point(A.X, A.Y + 1);
                     // 绘制(点)直线
                     g.DrawLine(pen, A, B);

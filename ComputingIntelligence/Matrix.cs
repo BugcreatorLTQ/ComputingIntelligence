@@ -314,7 +314,6 @@ namespace ComputingIntelligence
                     stringBuilder.Append(Data[i * Column + j]);
                     if (j < Column - 1) stringBuilder.Append(' ');
                 }
-                //if (i < Row - 1)
                 stringBuilder.Append('\n');
             }
             return stringBuilder.ToString();
