@@ -31,16 +31,18 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="Input">输入矩阵</param>
         /// <param name="Output">输出矩阵</param>
-        public BPNeuralNetwork(Matrix input, Matrix output)
+        /// <param name="funHide">隐含层响应函数</param>
+        /// <param name="funOut">输出层响应函数</param>
+        public BPNeuralNetwork(Matrix input, Matrix output, Function funHide, Function funOut)
         {
             Input = input;
             Output = output;
             // 构建隐含层 
             Matrix Hide = new Matrix((int)Math.Sqrt(Input.Row * Output.Row) + 3, 1);
             // 构建输入-隐含网络
-            IH = new SingleNeuralNetwork(Input, Hide);
+            IH = new SingleNeuralNetwork(Input, Hide, funHide);
             // 构建隐含-输入网络
-            HO = new SingleNeuralNetwork(Hide, Output);
+            HO = new SingleNeuralNetwork(Hide, Output, funOut);
         }
 
         /// <summary>
@@ -110,17 +112,6 @@ namespace ComputingIntelligence
             }
             // 关闭流
             writer.Close();
-        }
-
-        /// <summary>
-        /// 设置神经元函数
-        /// </summary>
-        /// <param name="funHide">隐含层神经元函数</param>
-        /// <param name="funOut">输出层神经元函数</param>
-        public void SetFun(Function funHide, Function funOut)
-        {
-            IH.Fun += funHide;
-            HO.Fun += funOut;
         }
 
     }

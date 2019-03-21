@@ -88,9 +88,7 @@ namespace ComputingIntelligence
             // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("output.txt");
             // 创建BP神经网络
-            BPNeuralNetwork bp = new BPNeuralNetwork(input, output);
-            // 设置神经元函数
-            bp.SetFun(LogSigFun, LinearFun);
+            BPNeuralNetwork bp = new BPNeuralNetwork(input, output, LogSigFun, LinearFun);
             bp.Train(200);
             Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
         }
@@ -105,9 +103,7 @@ namespace ComputingIntelligence
             // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("output.txt");
             // 创建单层神经网络
-            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output);
-            // 添加函数委托
-            network.Fun += LinearFun;
+            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output, LinearFun);
             // 训练
             network.Train(200);
             // 保存权重矩阵 
@@ -140,9 +136,7 @@ namespace ComputingIntelligence
             // 读取输入矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("source.txt");
             // 创建BP神经网络
-            BPNeuralNetwork bp = new BPNeuralNetwork(input, output);
-            // 设置神经元函数
-            bp.SetFun(TanSigFun, LinearFun);
+            BPNeuralNetwork bp = new BPNeuralNetwork(input, output, TanSigFun, LinearFun);
             // 训练网络
             bp.Train(200);
             // 显示误差

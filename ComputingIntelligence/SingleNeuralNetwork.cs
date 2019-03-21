@@ -45,10 +45,13 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="input">输入矩阵</param>
         /// <param name="output">输出矩阵</param>
-        public SingleNeuralNetwork(Matrix input, Matrix output)
+        /// <param name="fun">响应函数</param>
+        public SingleNeuralNetwork(Matrix input, Matrix output, Function fun)
         {
             Input = input;
             Output = output;
+            // 创建函数
+            Fun = fun;
             // 生成权重矩阵
             Weights = Matrix.GetRandomMatrix(output.Row, input.Row);
             // 生成阈值矩阵
