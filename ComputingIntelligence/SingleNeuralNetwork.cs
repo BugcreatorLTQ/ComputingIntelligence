@@ -72,7 +72,7 @@ namespace ComputingIntelligence
         /// 训练网络
         /// </summary>
         /// <param name="times">训练次数</param>
-        public void Training(int times)
+        public void Train(int times)
         {
             // 用于创建误差文件
             FileStream outStream = new FileStream("Error.txt", FileMode.Create);

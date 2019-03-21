@@ -39,13 +39,30 @@ namespace ComputingIntelligence
         /// Logsig函数
         /// </summary>
         /// <param name="matrix">输入矩阵</param>
-        /// <returns></returns>
+        /// <returns>计算结果矩阵</returns>
         public static Matrix LogSigFun(Matrix matrix)
         {
             Matrix result = new Matrix(matrix.Row, matrix.Column);
             for(int i=0; i < result.Data.Length; i++)
             {
-                result.Data[i] = 1 / (1 + (float)Math.Pow(Math.E, (double)-matrix.Data[i]));
+                float Fx = 1 / (1 + (float)Math.Pow(Math.E, (double)-matrix.Data[i]));
+                result.Data[i] = Fx * (1 - Fx);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tansig函数
+        /// </summary>
+        /// <param name="matrix">输入矩阵</param>
+        /// <returns>计算结果矩阵</returns>
+        public static Matrix TanSigFun(Matrix matrix)
+        {
+            Matrix result = new Matrix(matrix.Row, matrix.Column);
+            for (int i = 0; i < result.Data.Length; i++)
+            {
+                float Fx = (float)Math.Tanh(matrix.Data[i]);
+                result.Data[i] = (1 - Fx * Fx) / 2;
             }
             return result;
         }
@@ -57,8 +74,8 @@ namespace ComputingIntelligence
         public static void Main(string[] args)
         {
             //Run.Start();
-            Run.Demo();
-            //Run.Test();
+            //Run.Demo();
+            Run.Test();
         }
 
         /// <summary>
@@ -74,7 +91,8 @@ namespace ComputingIntelligence
             BPNeuralNetwork bp = new BPNeuralNetwork(input, output);
             // 设置神经元函数
             bp.SetFun(LogSigFun, LinearFun);
-            bp.Training(50);
+            bp.Train(200);
+            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
         }
 
         /// <summary>
@@ -91,7 +109,7 @@ namespace ComputingIntelligence
             // 添加函数委托
             network.Fun += LinearFun;
             // 训练
-            network.Training(200);
+            network.Train(200);
             // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
             // 保存阈值矩阵 
@@ -112,14 +130,23 @@ namespace ComputingIntelligence
         /// </summary>
         static void Test()
         {
-
-            // 读取输入矩阵
-            Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
-            Console.WriteLine(input);
-            foreach(Matrix x in input.GetRows())
+            // 生成输入矩阵
+            float[] data = new float[21];
+            for(int i = 0; i < data.Length; i++)
             {
-                Console.WriteLine(x);
+                data[i] = 0.1f * i - 1;
             }
+            Matrix input = new Matrix(1, data.Length, data);
+            // 读取输入矩阵
+            Matrix output = MatrixFileIO.ReadMatrixOfFile("source.txt");
+            // 创建BP神经网络
+            BPNeuralNetwork bp = new BPNeuralNetwork(input, output);
+            // 设置神经元函数
+            bp.SetFun(TanSigFun, LinearFun);
+            // 训练网络
+            bp.Train(200);
+            // 显示误差
+            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
         }
 
     }

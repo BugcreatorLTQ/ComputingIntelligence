@@ -73,13 +73,13 @@ namespace ComputingIntelligence
         /// 训练网络
         /// </summary>
         /// <param name="times">训练次数</param>
-        public void Training(int times)
+        public void Train(int times)
         {
             // 用于创建误差文件
-            FileStream outStream = new FileStream("Error.txt", FileMode.Create);
+            FileStream outStream = new FileStream("error.txt", FileMode.Create);
             outStream.Close();
             // 打开文件
-            outStream = new FileStream("Error.txt", FileMode.Append);
+            outStream = new FileStream("error.txt", FileMode.Append);
             // 包装为writer
             StreamWriter writer = new StreamWriter(outStream);
             // 输入矩阵数组
@@ -87,14 +87,14 @@ namespace ComputingIntelligence
             // 输出矩阵数组
             Matrix[] output = Output.GetColumns();
             // 误差矩阵
-            Matrix errMat;
+            Matrix errMat = null;
             // 结果矩阵
-            Matrix result;
+            Matrix result = null;
             // 训练times次
             while (times-- > 0)
             {
                 // 用第i组数据训练
-                for(int i = 0; i < Input.Column; i++)
+                for (int i = 0; i < Input.Column; i++)
                 {
                     // 计算结果
                     result = GetResult(input[i]);
@@ -102,11 +102,11 @@ namespace ComputingIntelligence
                     errMat = output[i] - result;
                     // 修正权重
                     FixWeights(input[i], errMat);
-                    // 输出误差
-                    Console.WriteLine("误差：\n" + errMat + "\n");
-                    // 向文件写入数据
-                    writer.WriteLine(errMat);
                 }
+                // 输出误差
+                Console.WriteLine("误差：\n" + errMat);
+                // 向文件写入数据
+                writer.Write(errMat.T);
             }
             // 关闭流
             writer.Close();
