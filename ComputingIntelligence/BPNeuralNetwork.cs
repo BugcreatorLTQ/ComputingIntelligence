@@ -63,10 +63,13 @@ namespace ComputingIntelligence
         /// <param name="error">误差矩阵</param>
         public void FixWeights(Matrix input, Matrix error)
         {
+            // 获取隐含层输出
+            Matrix output = IH.GetResult(input);
             // 计算隐含层误差
             Matrix errHide = HO.Weights.T * error;
+            errHide.X(IH.Fun.func(output));
             // 修正HO网络
-            HO.FixWeights(IH.GetResult(input), error);
+            HO.FixWeights(output, error);
             // 修正IO网络
             IH.FixWeights(input, errHide);
         }

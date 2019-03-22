@@ -29,13 +29,6 @@ namespace ComputingIntelligence
         public Matrix Threshold { set; get; }
 
         /// <summary>
-        /// 定义神经元函数委托
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public delegate Matrix Function(Matrix input);
-
-        /// <summary>
         /// 定义神经元函数
         /// </summary>
         public Function Fun { get; set; }
@@ -127,7 +120,7 @@ namespace ComputingIntelligence
         public Matrix GetResult(Matrix input)
         {
             // 权重×输入+阈值
-            return Fun(Weights * input + Threshold);
+            return Fun.function(Weights * input + Threshold);
         }
 
     }
