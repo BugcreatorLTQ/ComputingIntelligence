@@ -33,7 +33,7 @@ namespace ComputingIntelligence
         /// <param name="Output">输出矩阵</param>
         /// <param name="funHide">隐含层响应函数</param>
         /// <param name="funOut">输出层响应函数</param>
-        public BPNeuralNetwork(Matrix input, Matrix output, Function funHide, Function funOut)
+        public BPNeuralNetwork(Matrix input, Matrix output, NetworkFunction funHide, NetworkFunction funOut)
         {
             Input = input;
             Output = output;
@@ -60,18 +60,18 @@ namespace ComputingIntelligence
         /// 修正权重矩阵
         /// </summary>
         /// <param name="input">输入矩阵</param>
+        /// <param name="output">输出矩阵</param>
         /// <param name="error">误差矩阵</param>
-        public void FixWeights(Matrix input, Matrix error)
+        public void FixWeights(Matrix input, Matrix output, Matrix error)
         {
-            // 获取隐含层输出
-            Matrix output = IH.GetResult(input);
+            // 计算输入-隐含层输出
+            Matrix IHOut = IH.GetResult(input);
             // 计算隐含层误差
             Matrix errHide = HO.Weights.T * error;
-            errHide.X(IH.Fun.func(output));
-            // 修正HO网络
-            HO.FixWeights(output, error);
+            // 修正IH网络
+            HO.FixWeights(IHOut, output, error);
             // 修正IO网络
-            IH.FixWeights(input, errHide);
+            IH.FixWeights(input, IHOut, errHide);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace ComputingIntelligence
                     // 计算误差
                     errMat = output[i] - result;
                     // 修正权重
-                    FixWeights(input[i], errMat);
+                    FixWeights(input[i], output[i], errMat);
                 }
                 // 输出误差
                 Console.WriteLine("误差：\n" + errMat);

@@ -16,8 +16,8 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            Run.Start();
-            //Run.Demo();
+            //Run.Start();
+            Run.Demo();
             //Run.Test();
         }
 
@@ -53,9 +53,9 @@ namespace ComputingIntelligence
             // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("output.txt");
             // 创建单层神经网络
-            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output,new LinearFun());
+            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output,new LinearFun(0.3f));
             // 训练
-            network.Train(200);
+            network.Train(250);
             // 保存权重矩阵 
             MatrixFileIO.WriteMatrixToFile("Weights.txt", network.Weights);
             // 保存阈值矩阵 

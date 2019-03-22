@@ -10,12 +10,12 @@ namespace ComputingIntelligence
         /// <summary>
         /// 横坐标起点
         /// </summary>
-        private int start_x = 10;
+        private readonly int start_x = 10;
 
         /// <summary>
         /// 纵坐标起点
         /// </summary>
-        private int start_y = 50;
+        private readonly int start_y = 50;
 
         /// <summary>
         /// 绘制的数据
@@ -66,10 +66,13 @@ namespace ComputingIntelligence
                 // 第j列
                 for (int j = 0; j < Data.Column; j++)
                 {
-                    Point A = new Point(Width / Data.Row * i + start_x, this.Height - (int)(datas[i].Data[j] * 500) - start_y);
-                    Point B = new Point(A.X, A.Y + 1);
+                    Point A = new Point(Width * i / Data.Row + start_x, this.Height - (int)(datas[i].Data[j] * 500) - start_y);
+                    Point B = new Point(A.X - 1, A.Y - 1);
+                    Point C = new Point(A.X - 1, A.Y);
+                    Point D = new Point(A.X, A.Y - 1);
                     // 绘制(点)直线
                     g.DrawLine(pen, A, B);
+                    g.DrawLine(pen, C, D);
                 }
             }
         }

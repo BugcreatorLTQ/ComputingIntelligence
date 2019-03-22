@@ -216,6 +216,16 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
+        /// 将一个数隐形传换为矩阵
+        /// </summary>
+        /// <param name="num">一个1*1的矩阵</param>
+        public static implicit operator Matrix(float num)
+        {
+            float[] data = { num };
+            return new Matrix(1, 1, data);
+        }
+
+        /// <summary>
         /// 矩阵元素依次相乘
         /// </summary>
         /// <param name="matrix">输入矩阵</param>
@@ -228,16 +238,6 @@ namespace ComputingIntelligence
                 result.Data[i] *= matrix.Data[i];
             }
             return result;
-        }
-
-        /// <summary>
-        /// 将一个数隐形传换为矩阵
-        /// </summary>
-        /// <param name="num">一个1*1的矩阵</param>
-        public static implicit operator Matrix(float num)
-        {
-            float[] data = { num };
-            return new Matrix(1, 1, data);
         }
 
         /// <summary>

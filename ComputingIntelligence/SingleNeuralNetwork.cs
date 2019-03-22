@@ -31,7 +31,7 @@ namespace ComputingIntelligence
         /// <summary>
         /// 定义神经元函数
         /// </summary>
-        public Function Fun { get; set; }
+        public NetworkFunction Fun { get; set; }
 
         /// <summary>
         /// 创建一个神经网络
@@ -39,7 +39,7 @@ namespace ComputingIntelligence
         /// <param name="input">输入矩阵</param>
         /// <param name="output">输出矩阵</param>
         /// <param name="fun">响应函数</param>
-        public SingleNeuralNetwork(Matrix input, Matrix output, Function fun)
+        public SingleNeuralNetwork(Matrix input, Matrix output, NetworkFunction fun)
         {
             Input = input;
             Output = output;
@@ -55,9 +55,12 @@ namespace ComputingIntelligence
         /// 修正权重矩阵
         /// </summary>
         /// <param name="input">输入矩阵</param>
+        /// <param name="output">输出矩阵</param>
         /// <param name="error">计算误差</param>
-        public void FixWeights(Matrix input, Matrix error)
+        public void FixWeights(Matrix input, Matrix output, Matrix error)
         {
+            // 计算误差效能
+            error = error.X(Fun.func(output));
             // 修正权重矩阵
             Weights += 0.5f * error * input.T;
             // 修正阈值矩阵
@@ -101,7 +104,7 @@ namespace ComputingIntelligence
                     // 计算误差 (理想减输出)
                     errMat = output[i] - result;
                     // 修正权重
-                    FixWeights(input[i], errMat);
+                    FixWeights(input[i], output[i], errMat);
                 }
                 // 向文件写入数据
                 writer.Write(errMat.T);
