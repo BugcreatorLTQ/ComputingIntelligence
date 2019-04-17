@@ -16,9 +16,9 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            Run.Start();
+            //Run.Start();
             //Run.Demo();
-            //Run.Test();
+            Run.Test();
         }
 
         /// <summary>
@@ -30,20 +30,20 @@ namespace ComputingIntelligence
             Matrix input = Matrix.Space(0,2,0.1f);
             // 读取输入矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("source.txt");
-            Matrix In = input.T.GetSubMatrix(0, 15).T;
-            Matrix Out = output.T.GetSubMatrix(0, 15).T;
+            Matrix In = input.T.GetSubMatrix(0, 21).T;
+            Matrix Out = output.T.GetSubMatrix(0, 21).T;
             Matrix C_In = input.T.GetSubMatrix(15, 21).T;
             Matrix C_Out = output.T.GetSubMatrix(15, 21).T;
             // 创建BP神经网络
             BPNeuralNetwork bp = new BPNeuralNetwork(In, Out,new TanSigFun(), new LinearFun());
             // 训练网络
-            bp.Train(5);
+            bp.Train(200);
             // 检验结果
             bp.Comparison(C_In, C_Out);
             // 显示误差
-            //Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
+            //Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt").T));
             // 显示图像
-            Application.Run(new DrawForm(bp.GetResult(Matrix.Space(0, 30, 0.1f)).T));
+            Application.Run(new DrawForm(bp.GetResult(Matrix.Space(-10, 10, 0.1f))));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ComputingIntelligence
             // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("output.txt");
             // 创建单层神经网络
-            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output, new LinearFun(0.3f));
+            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output, new LinearFun(0.25f));
             // 训练
             network.Train(250);
             // 保存权重矩阵 
@@ -71,7 +71,7 @@ namespace ComputingIntelligence
             {
                 Console.WriteLine(network.GetResult(testInput[i]));
             }
-            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
+            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt").T));
         }
 
         /// <summary>
@@ -79,8 +79,9 @@ namespace ComputingIntelligence
         /// </summary>
         static void Test()
         {
-            Console.WriteLine(Matrix.Space(0f, 2f, 0.1f));
-            Console.WriteLine(Matrix.Space(0f, 2f, 20));
+            Matrix matrix = Matrix.Space(-10, 10, 0.1f);
+            matrix = new TanSigFun().function(matrix);
+            Application.Run(new DrawForm(matrix));
         }
 
     }
