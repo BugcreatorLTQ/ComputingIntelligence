@@ -11,12 +11,11 @@ namespace ComputingIntelligence
     /// </summary>
     public interface NetworkFunction
     {
-
         /// <summary>
         /// 导函数
         /// </summary>
-        /// <param name="matrix">输入矩阵</param>
-        /// <returns>结果矩阵</returns>
+        /// <param name="matrix">结果矩阵矩阵</param>
+        /// <returns>导数矩阵</returns>
         Matrix func(Matrix matrix);
 
         /// <summary>
@@ -32,14 +31,24 @@ namespace ComputingIntelligence
     /// </summary>
     public class ThresholdFun : NetworkFunction
     {
+
+        /*
+         * f(x) = x>0 ? 1 : 0
+         */
+
         /// <summary>
         /// 导函数
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns>错误</returns>
+        /// <param name="matrix">结果矩阵</param>
+        /// <returns>导数矩阵</returns>
         public Matrix func(Matrix matrix)
         {
-            throw new NotImplementedException();
+            float[] data = new float[matrix.Data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = 1;
+            }
+            return new Matrix(matrix.Row, matrix.Column, data);
         }
 
         /// <summary>
@@ -63,6 +72,11 @@ namespace ComputingIntelligence
     /// </summary>
     public class LinearFun : NetworkFunction
     {
+
+        /*
+         * f(x) = k * x
+         */
+
         /// <summary>
         /// 斜率
         /// </summary>
@@ -80,20 +94,20 @@ namespace ComputingIntelligence
         /// <summary>
         /// 创建一个斜率为1的线性函数
         /// </summary>
-        public LinearFun():this(1)
+        public LinearFun() : this(1)
         {
-            
+
         }
 
         /// <summary>
         /// 导函数
         /// </summary>
-        /// <param name="matrix">输入矩阵</param>
-        /// <returns导函数</returns>
+        /// <param name="matrix">结果矩阵</param>
+        /// <returns导数矩阵</returns>
         public Matrix func(Matrix matrix)
         {
             float[] data = new float[matrix.Data.Length];
-            for(int i = 0; i < data.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 data[i] = K;
             }
@@ -116,17 +130,25 @@ namespace ComputingIntelligence
     /// </summary>
     public class LogSigFun : NetworkFunction
     {
+
+        /*
+         *             1
+         * f(x) = ------------
+         *        1+(1+e^(-x))
+         */
+
         /// <summary>
         /// 导函数
         /// </summary>
-        /// <param name="matrix">输入矩阵</param>
-        /// <returns>导函数</returns>
+        /// <param name="matrix">结果矩阵</param>
+        /// <returns>导数矩阵</returns>
         public Matrix func(Matrix matrix)
         {
             Matrix result = new Matrix(matrix.Row, matrix.Column);
             for (int i = 0; i < result.Data.Length; i++)
             {
-                float Fx = 1 / (1 + (float)Math.Pow(Math.E, (double)-matrix.Data[i]));
+                //float Fx = 1 / (1 + (float)Math.Pow(Math.E, (double)-matrix.Data[i]));
+                float Fx = matrix.Data[i];
                 result.Data[i] = Fx * (1 - Fx);
             }
             return result;
@@ -154,17 +176,25 @@ namespace ComputingIntelligence
     /// </summary>
     public class TanSigFun : NetworkFunction
     {
+
+        /*
+         *            1
+         * f(x) = ---------
+         *         tanh(x)
+         */
+
         /// <summary>
         /// 导函数
         /// </summary>
-        /// <param name="matrix">输入矩阵</param>
-        /// <returns>导函数</returns>
+        /// <param name="matrix">结果矩阵</param>
+        /// <returns>导数矩阵</returns>
         public Matrix func(Matrix matrix)
         {
             Matrix result = new Matrix(matrix.Row, matrix.Column);
             for (int i = 0; i < result.Data.Length; i++)
             {
-                float Fx = (float)Math.Tanh(matrix.Data[i]);
+                //float Fx = (float)Math.Tanh(matrix.Data[i]);
+                float Fx = matrix.Data[i];
                 result.Data[i] = (1 - Fx * Fx) / 2;
             }
             return result;

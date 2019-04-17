@@ -55,12 +55,9 @@ namespace ComputingIntelligence
         /// 修正权重矩阵
         /// </summary>
         /// <param name="input">输入矩阵</param>
-        /// <param name="output">输出矩阵</param>
         /// <param name="error">计算误差</param>
-        public void FixWeights(Matrix input, Matrix output, Matrix error)
+        public void FixWeights(Matrix input, Matrix error)
         {
-            // 计算误差效能
-            error = error.X(Fun.func(output));
             // 修正权重矩阵
             Weights += 0.5f * error * input.T;
             // 修正阈值矩阵
@@ -103,8 +100,9 @@ namespace ComputingIntelligence
                     result = GetResult(input[i]);
                     // 计算误差 (理想减输出)
                     errMat = output[i] - result;
+                    errMat = errMat.X(Fun.func(result));
                     // 修正权重
-                    FixWeights(input[i], output[i], errMat);
+                    FixWeights(input[i], errMat);
                 }
                 // 向文件写入数据
                 writer.Write(errMat.T);
@@ -122,8 +120,16 @@ namespace ComputingIntelligence
         /// <returns>结果矩阵</returns>
         public Matrix GetResult(Matrix input)
         {
-            // 权重×输入+阈值
-            return Fun.function(Weights * input + Threshold);
+            Matrix[] inputs = input.GetColumns();
+            float[] data = new float[Output.Row * input.Column];
+            for (int i = 0; i < input.Column; i++)
+            {
+                // 权重×输入+阈值
+                Matrix Out = Fun.function(Weights * inputs[i] + Threshold);
+                Out.Data.CopyTo(data, i * Output.Row);
+            }
+            Matrix Result = new Matrix(input.Column, Output.Row, data);
+            return Result.T;
         }
 
     }

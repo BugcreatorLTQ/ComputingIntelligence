@@ -62,6 +62,7 @@ namespace ComputingIntelligence
         /// <param name="input">输入矩阵</param>
         /// <param name="output">输出矩阵</param>
         /// <param name="error">误差矩阵</param>
+        [Obsolete("该方法已被弃用")]
         public void FixWeights(Matrix input, Matrix output, Matrix error)
         {
             // 计算输入-隐含层输出
@@ -69,9 +70,9 @@ namespace ComputingIntelligence
             // 计算隐含层误差
             Matrix errHide = HO.Weights.T * error;
             // 修正IH网络
-            HO.FixWeights(IHOut, output, error);
+            HO.FixWeights(IHOut, error);
             // 修正IO网络
-            IH.FixWeights(input, IHOut, errHide);
+            IH.FixWeights(input, errHide);
         }
 
         /// <summary>
@@ -93,20 +94,27 @@ namespace ComputingIntelligence
             Matrix[] output = Output.GetColumns();
             // 误差矩阵
             Matrix errMat = null;
-            // 结果矩阵
-            Matrix result = null;
             // 训练times次
             while (times-- > 0)
             {
                 // 用第i组数据训练
                 for (int i = 0; i < Input.Column; i++)
                 {
-                    // 计算结果
-                    result = GetResult(input[i]);
-                    // 计算误差
-                    errMat = output[i] - result;
-                    // 修正权重
-                    FixWeights(input[i], output[i], errMat);
+                    // 计算IH层输出
+                    Matrix IHout = IH.GetResult(input[i]);
+                    // 计算HO层输出
+                    Matrix HOout = HO.GetResult(IHout);
+                    // 计算输出层误差
+                    errMat = output[i] - HOout;
+                    // 计算输出层误差效能
+                    errMat = errMat.X(HO.Fun.func(HOout));
+                    // 计算隐含层误差效能
+                    Matrix errHide = HO.Weights.T * errMat;
+                    errHide = errHide.X(IH.Fun.func(IHout));
+                    // 修正HO网络
+                    HO.FixWeights(IHout, errMat);
+                    // 修正IH网络
+                    IH.FixWeights(input[i], errHide);
                 }
                 // 输出误差
                 Console.WriteLine("误差：\n" + errMat);
@@ -117,5 +125,16 @@ namespace ComputingIntelligence
             writer.Close();
         }
 
+        /// <summary>
+        /// 检验训练数据
+        /// </summary>
+        /// <param name="input">输入数据</param>
+        /// <param name="output">输出数据</param>
+        public void Comparison(Matrix input,Matrix output)
+        {
+            Console.WriteLine("检验开始");
+            Console.WriteLine(output - GetResult(input));
+            Console.WriteLine("检验结束");
+        }
     }
 }

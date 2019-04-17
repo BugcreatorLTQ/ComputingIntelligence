@@ -114,6 +114,42 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
+        /// 创建一个单调矩阵
+        /// </summary>
+        /// <param name="start">起始值</param>
+        /// <param name="end">结束值</param>
+        /// <param name="size">元素个数</param>
+        /// <returns>[srart,end],个数为size的单调矩阵</returns>
+        public static Matrix Space(float start,float end,int size)
+        {
+            Matrix matrix = new Matrix(1, size);
+            float step = (end - start) / size;
+            for(int i = 0; i < size; i++)
+            {
+                matrix.Data[i] = start + i * step;
+            }
+            return matrix;
+        }
+
+        /// <summary>
+        /// 创建一个单调矩阵
+        /// </summary>
+        /// <param name="start">起始值</param>
+        /// <param name="end">结束值</param>
+        /// <param name="step">步长</param>
+        /// <returns>[srart,end],步长为step的单调矩阵</returns>
+        public static Matrix Space(float start,float end, float step)
+        {
+            int size = (int)((end - start + 1E-6) / step) + 1;
+            Matrix matrix = new Matrix(1, size);
+            for(int i = 0; i < size; i++)
+            {
+                matrix.Data[i] = start + i * step;
+            }
+            return matrix;
+        }
+
+        /// <summary>
         /// 矩阵取负
         /// </summary>
         /// <param name="srcMatrix">运算右矩阵</param>
@@ -317,6 +353,51 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
+        /// 获取逆矩阵
+        /// </summary>
+        /// <returns>逆矩阵</returns>
+        [Obsolete("未完成")]
+        protected Matrix GetInv()
+        {
+            // 增广矩阵数据
+            float[] data = new float[Data.Length * 2];
+            for(int i = 0; i < Row; i++)
+            {
+                for (int j = 0; j < Column; j++)
+                {
+                    data[i * Column * 2 + j] = Data[i * Column + j];
+                    data[i * Column * 2 + j * 2] = j == i ? 1 : 0;
+                }
+            }
+            // 创建增广矩阵
+            Matrix matrix = new Matrix(Row, Column * 2, data);
+            Console.WriteLine(matrix);
+            // 处理下三角矩阵
+            for(int i = 0; i < Row; i++)
+            {
+                // 第i行
+                // 处理第i列
+                for(int j = i; j < Row; j++)
+                {
+                    ;
+                }
+            }
+            // 处理上三角矩阵
+
+            // 逆矩阵数据
+            data = new float[Data.Length];
+            for (int i = 0; i < Row; i++)
+            {
+                for (int j = 0; j < Column; j++)
+                {
+                    data[i * Column + j] = matrix.Data[i * Column * 2 + j * 2];
+                }
+            }
+            Matrix result = new Matrix(Row, Column, data);
+            return result;
+        }
+
+        /// <summary>
         /// 转换为字符串
         /// </summary>
         /// <returns>转化的字符串</returns>
@@ -334,6 +415,22 @@ namespace ComputingIntelligence
             return stringBuilder.ToString();
         }
 
-
+        /// <summary>
+        /// 获取子矩阵
+        /// </summary>
+        /// <param name="row_start">子矩阵开始行数</param>
+        /// <param name="row_end">子矩阵结束行数</param>
+        /// <returns>子矩阵</returns>
+        public Matrix GetSubMatrix(int row_start, int row_end)
+        {
+            float[] data = new float[(row_end - row_start) * Column];
+            Matrix[] datas = GetRows();
+            for(int i = row_start; i < row_end; i++)
+            {
+                datas[i].Data.CopyTo(data, (i - row_start) * Column);
+            }
+            Matrix matrix = new Matrix(row_end - row_start, Column, data);
+            return matrix;
+        }
     }
 }

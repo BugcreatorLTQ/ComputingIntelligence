@@ -8,6 +8,46 @@ using System.Threading.Tasks;
 namespace ComputingIntelligence
 {
 
+    /// <summary>
+    /// 筛选器接口
+    /// </summary>
+    interface Filter
+    {
+        /// <summary>
+        /// 筛选
+        /// </summary>
+        /// <param name="data">数据</param>
+        /// <returns>结果矩阵</returns>
+        Matrix Filter(string data);
+    }
+
+    /// <summary>
+    /// 鸢尾花筛选器
+    /// </summary>
+    class IrisFilter : Filter
+    {
+        public Matrix Filter(string data)
+        {
+            float[] matData = { 0, 0, 0 };
+            switch (data)
+            {
+                case "1":
+                    matData[0] = 1;
+                    break;
+                case "2":
+                    matData[1] = 1;
+                    break;
+                case "3":
+                    matData[2] = 1;
+                    break;
+                default:
+                    break;
+            }
+            Matrix matrix = new Matrix(1,3,matData);
+            return matrix;
+        }
+    }
+
     static class MatrixFileIO
     {
         /// <summary>
@@ -15,7 +55,7 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="filePath">文件名</param>
         /// <returns>读取的矩阵</returns>
-        public static Matrix ReadMatrixOfFile(string filePath)
+        public static Matrix ReadMatrixOfFile(string filePath, Filter filter = null)
         {
             // 提示信息
             Console.WriteLine("正在打开文件" + filePath);
@@ -47,8 +87,16 @@ namespace ComputingIntelligence
                 // 依次解析数据
                 for (int i = 0; i < colunm; i++)
                 {
-                    // 添加到数据链表
-                    data.Add(float.Parse(dataStrings[i]));
+                    if (float.TryParse(dataStrings[i], out float parseData))
+                    {
+                        // 添加到数据链表
+                        data.Add(parseData);
+                    }
+                    else
+                    {
+                        data.AddRange(filter.Filter(dataStrings[i]).Data);
+                    }
+
                 }
             }
             // 提示信息

@@ -16,8 +16,8 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            //Run.Start();
-            Run.Demo();
+            Run.Start();
+            //Run.Demo();
             //Run.Test();
         }
 
@@ -27,20 +27,23 @@ namespace ComputingIntelligence
         static void Start()
         {
             // 生成输入矩阵
-            float[] data = new float[21];
-            for (int i = 0; i < data.Length; i++)
-            {
-                data[i] = 0.1f * i - 1;
-            }
-            Matrix input = new Matrix(1, data.Length, data);
+            Matrix input = Matrix.Space(0,2,0.1f);
             // 读取输入矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("source.txt");
+            Matrix In = input.T.GetSubMatrix(0, 15).T;
+            Matrix Out = output.T.GetSubMatrix(0, 15).T;
+            Matrix C_In = input.T.GetSubMatrix(15, 21).T;
+            Matrix C_Out = output.T.GetSubMatrix(15, 21).T;
             // 创建BP神经网络
-            BPNeuralNetwork bp = new BPNeuralNetwork(input, output,new TanSigFun(), new LinearFun());
+            BPNeuralNetwork bp = new BPNeuralNetwork(In, Out,new TanSigFun(), new LinearFun());
             // 训练网络
-            bp.Train(200);
+            bp.Train(5);
+            // 检验结果
+            bp.Comparison(C_In, C_Out);
             // 显示误差
-            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
+            //Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt")));
+            // 显示图像
+            Application.Run(new DrawForm(bp.GetResult(Matrix.Space(0, 30, 0.1f)).T));
         }
 
         /// <summary>
@@ -53,7 +56,7 @@ namespace ComputingIntelligence
             // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("output.txt");
             // 创建单层神经网络
-            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output,new LinearFun(0.3f));
+            SingleNeuralNetwork network = new SingleNeuralNetwork(input, output, new LinearFun(0.3f));
             // 训练
             network.Train(250);
             // 保存权重矩阵 
@@ -76,6 +79,8 @@ namespace ComputingIntelligence
         /// </summary>
         static void Test()
         {
+            Console.WriteLine(Matrix.Space(0f, 2f, 0.1f));
+            Console.WriteLine(Matrix.Space(0f, 2f, 20));
         }
 
     }
