@@ -16,16 +16,22 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            Run.Iris();
-            //Run.Start();
-            //Run.Demo();
-            //Run.Test();
+            Genetic_Test();
+            //Single_Linear();
+            //BP_Curve();
+            //BP_Iris();
+        }
+
+        static void Genetic_Test()
+        {
+            Genetic genetic = new Genetic(10, 0.5, 0.5, new TestDNA());
+            genetic.Train(50);
         }
 
         /// <summary>
-        /// 鸢尾花测试
+        /// 鸢尾花数据训练
         /// </summary>
-        static void Iris()
+        static void BP_Iris()
         {
             Matrix data = MatrixFileIO.ReadMatrixOfFile("irisData.txt", new IrisFilter());
             int rows = data.Row * 5 / 7;
@@ -42,9 +48,9 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 运行模块
+        /// BP神经网络-曲线拟合
         /// </summary>
-        static void Start()
+        static void BP_Curve()
         {
             // 生成输入矩阵
             Matrix input = Matrix.Space(0,2,0.1f);
@@ -66,9 +72,9 @@ namespace ComputingIntelligence
         }
 
         /// <summary>
-        /// 演示模块
+        /// 单层神经网络-线性拟合
         /// </summary>
-        static void Demo()
+        static void Single_Linear()
         {
             // 读取输入矩阵
             Matrix input = MatrixFileIO.ReadMatrixOfFile("input.txt");
@@ -102,7 +108,6 @@ namespace ComputingIntelligence
             matrix = new TanSigFun().function(matrix);
             Application.Run(new DrawForm(matrix));
         }
-
 
         /// <summary>
         /// 显示误差

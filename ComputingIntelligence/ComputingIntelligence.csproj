@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BPNeuralNetwork.cs" />
+    <Compile Include="DNA.cs" />
     <Compile Include="DrawForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -44,6 +45,7 @@
       <DependentUpon>DrawForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
+    <Compile Include="Genetic.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="MatrixFileIO.cs" />
     <Compile Include="SingleNeuralNetwork.cs" />
