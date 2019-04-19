@@ -126,7 +126,7 @@ namespace ComputingIntelligence
                 // 选择
                 Selection();
                 // 输出
-                ShowDNA();
+                ShowSolution();
             }
         }
 
@@ -137,7 +137,7 @@ namespace ComputingIntelligence
         {
             foreach (DNA x in DNAS)
             {
-                Console.Write(x + " ");
+                Console.Write(x.DNACode + " ");
             }
             Console.WriteLine();
         }

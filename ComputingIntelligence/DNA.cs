@@ -65,9 +65,25 @@ namespace ComputingIntelligence
         public DNA RandomDNA { get => GetRandomDNA(); }
 
         /// <summary>
-        /// 解决方案
+        /// 获取解决方案
         /// </summary>
         public String Solution { get => GetSolution(); }
+
+        /// <summary>
+        /// 获取DNA编码
+        /// </summary>
+        public String DNACode
+        {
+            get
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (DNAData x in Data)
+                {
+                    stringBuilder.Append(x.ToCode() + '-');
+                }
+                return stringBuilder.ToString();
+            }
+        }
 
         /// <summary>
         /// 适应度值
@@ -96,7 +112,7 @@ namespace ComputingIntelligence
             {
                 temp[i] = Data[i];
             }
-            for(int i = 0; i < length; i++)
+            for (int i = Data.Length; i < Data.Length + length; i++)
             {
                 temp[i] = template.RandomData;
             }
@@ -140,16 +156,6 @@ namespace ComputingIntelligence
         /// <returns></returns>
         protected abstract String GetSolution();
 
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach(DNAData x in Data)
-            {
-                stringBuilder.Append(x.ToCode());
-            }
-            return stringBuilder.ToString();
-        }
-
         /// <summary>
         /// 复制DNA
         /// </summary>
@@ -165,62 +171,4 @@ namespace ComputingIntelligence
         }
     }
 
-    class TestDNA : DNA
-    {
-        protected class TestDNAData : DNAData
-        {
-
-            public bool Data { get; set; }
-
-            public override void Copy(DNAData src)
-            {
-                Data = (src as TestDNAData).Data;
-            }
-
-            public override string ToCode()
-            {
-                return Data ? "1" : "0";
-            }
-
-            public override void Variation()
-            {
-                Data = !Data;
-            }
-
-            protected override DNAData GetRandomData()
-            {
-                TestDNAData temp = new TestDNAData
-                {
-                    Data = random.Next(0, 2) == 1
-                };
-                return temp;
-            }
-        }
-
-        protected override DNA GetRandomDNA()
-        {
-            TestDNA testDNA = new TestDNA();
-            testDNA.AddRandomDNA(8, new TestDNAData());
-            return testDNA;
-        }
-
-        protected override double GetValue()
-        {
-            int sum = 0;
-            for (int i = 0; i < Data.Length; i++)
-            {
-                if ((Data[i] as TestDNAData).Data)
-                {
-                    sum += 1 << i;
-                }
-            }
-            return sum;
-        }
-
-        protected override string GetSolution()
-        {
-            return Value.ToString();
-        }
-
-    }
 }

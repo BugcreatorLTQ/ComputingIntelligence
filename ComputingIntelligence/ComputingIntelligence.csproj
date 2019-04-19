@@ -50,6 +50,7 @@
     <Compile Include="MatrixFileIO.cs" />
     <Compile Include="SingleNeuralNetwork.cs" />
     <Compile Include="Run.cs" />
+    <Compile Include="TestDNA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

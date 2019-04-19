@@ -24,7 +24,7 @@ namespace ComputingIntelligence
 
         static void Genetic_Test()
         {
-            Genetic genetic = new Genetic(10, 0.5, 0.5, new TestDNA());
+            Genetic genetic = new Genetic(6, 0.5, 0.5, new TestDNA());
             genetic.Train(50);
         }
 
