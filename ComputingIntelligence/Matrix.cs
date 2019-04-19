@@ -83,8 +83,10 @@ namespace ComputingIntelligence
         /// </summary>
         /// <param name="row">矩阵的行数</param>
         /// <param name="column">矩阵的列数</param>
+        /// <param name="min">下限</param>
+        /// <param name="max">上限</param>
         /// <returns>一个row行column列的随机矩阵</returns>
-        public static Matrix GetRandomMatrix(int row, int column)
+        public static Matrix GetRandomMatrix(int row, int column, double min = -1, double max = 1)
         {
             // 申请数组
             float[] data = new float[row * column];
@@ -92,7 +94,7 @@ namespace ComputingIntelligence
             for(int i = 0; i < data.Length; i++)
             {
                 // 获取随机数
-                data[i] = (float)random.NextDouble() * 2 - 1;
+                data[i] = (float)(random.NextDouble() * (max - min) + min);
             }
             // 创建随机数组
             Matrix randomMatrix = new Matrix(row, column,data);

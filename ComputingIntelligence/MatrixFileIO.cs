@@ -31,13 +31,13 @@ namespace ComputingIntelligence
             float[] matData = { 0, 0, 0 };
             switch (data)
             {
-                case "1":
+                case "Iris-setosa":
                     matData[0] = 1;
                     break;
-                case "2":
+                case "Iris-versicolor":
                     matData[1] = 1;
                     break;
-                case "3":
+                case "Iris-virginica":
                     matData[2] = 1;
                     break;
                 default:
@@ -104,7 +104,8 @@ namespace ComputingIntelligence
             // 关闭流
             reader.Close();
             // 创建矩阵
-            Matrix matrix = new Matrix(row, colunm, data.ToArray());
+            float[] matData = data.ToArray();
+            Matrix matrix = new Matrix(row, matData.Length / row, matData);
             return matrix;
         }
            

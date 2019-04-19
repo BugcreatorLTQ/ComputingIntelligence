@@ -16,9 +16,29 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
+            Run.Iris();
             //Run.Start();
             //Run.Demo();
-            Run.Test();
+            //Run.Test();
+        }
+
+        /// <summary>
+        /// 鸢尾花测试
+        /// </summary>
+        static void Iris()
+        {
+            Matrix data = MatrixFileIO.ReadMatrixOfFile("irisData.txt", new IrisFilter());
+            int rows = data.Row * 5 / 7;
+            Matrix data_train = data.GetSubMatrix(0, rows).T;
+            Matrix data_comp = data.GetSubMatrix(rows, data.Row).T;
+            Matrix input = data_train.GetSubMatrix(0, data_train.Row - 3);
+            Matrix output = data_train.GetSubMatrix(data_train.Row - 3, data_train.Row);
+            BPNeuralNetwork bp = new BPNeuralNetwork(input, output, new TanSigFun(), new LinearFun(0.5f));
+            bp.Train(500);
+            input = data_comp.GetSubMatrix(0, data_comp.Row - 3);
+            output = data_comp.GetSubMatrix(data_comp.Row - 3, data_comp.Row);
+            bp.Comparison(input, output);
+            ShowError();
         }
 
         /// <summary>
@@ -28,22 +48,21 @@ namespace ComputingIntelligence
         {
             // 生成输入矩阵
             Matrix input = Matrix.Space(0,2,0.1f);
-            // 读取输入矩阵
+            // 读取输出矩阵
             Matrix output = MatrixFileIO.ReadMatrixOfFile("source.txt");
-            Matrix In = input.T.GetSubMatrix(0, 21).T;
-            Matrix Out = output.T.GetSubMatrix(0, 21).T;
-            Matrix C_In = input.T.GetSubMatrix(15, 21).T;
-            Matrix C_Out = output.T.GetSubMatrix(15, 21).T;
+            Matrix In = input;
+            Matrix Out = output;
             // 创建BP神经网络
-            BPNeuralNetwork bp = new BPNeuralNetwork(In, Out,new TanSigFun(), new LinearFun());
+            BPNeuralNetwork bp = new BPNeuralNetwork(In, Out,new TanSigFun(), new LinearFun(0.4f));
             // 训练网络
-            bp.Train(200);
-            // 检验结果
-            bp.Comparison(C_In, C_Out);
-            // 显示误差
-            //Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt").T));
+            bp.Train(2000);
             // 显示图像
-            Application.Run(new DrawForm(bp.GetResult(Matrix.Space(-10, 10, 0.1f))));
+            Matrix data = bp.GetResult(Matrix.Space(0, 2, 0.1f));
+            Matrix temp = new Matrix(2, 1, new float[] { 1, 0 });
+            data = temp * data;
+            temp = new Matrix(2, 1, new float[] { 0, 1 });
+            data += temp * output;
+            Application.Run(new DrawForm(data));
         }
 
         /// <summary>
@@ -71,7 +90,7 @@ namespace ComputingIntelligence
             {
                 Console.WriteLine(network.GetResult(testInput[i]));
             }
-            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt").T));
+            ShowError();
         }
 
         /// <summary>
@@ -84,5 +103,13 @@ namespace ComputingIntelligence
             Application.Run(new DrawForm(matrix));
         }
 
+
+        /// <summary>
+        /// 显示误差
+        /// </summary>
+        static void ShowError()
+        {
+            Application.Run(new DrawForm(MatrixFileIO.ReadMatrixOfFile("error.txt").T));
+        }
     }
 }

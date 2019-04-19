@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 using static ComputingIntelligence.SingleNeuralNetwork;
 
 namespace ComputingIntelligence
@@ -136,5 +137,6 @@ namespace ComputingIntelligence
             Console.WriteLine(output - GetResult(input));
             Console.WriteLine("检验结束");
         }
+
     }
 }
