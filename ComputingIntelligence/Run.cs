@@ -16,16 +16,27 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            Genetic_Test();
+            _51();
+            //Genetic_Test();
             //Single_Linear();
             //BP_Curve();
             //BP_Iris();
         }
 
+        static void _51()
+        {
+            Matrix data = MatrixFileIO.ReadMatrixOfFile("data.txt");
+            data = data.T;
+            Matrix input = data.GetSubMatrix(0, 2);
+            Matrix output = data.GetSubMatrix(2, 3);
+            BPNeuralNetwork bp = new BPNeuralNetwork(input, output, new TanSigFun(), new LinearFun());
+            bp.Train(60);
+        }
+
         static void Genetic_Test()
         {
-            Genetic genetic = new Genetic(6, 0.5, 0.5, new TestDNA());
-            genetic.Train(50);
+            Genetic genetic = new Genetic(200, 0.7, 0.8, new DNAT());
+            genetic.Train(1000);
         }
 
         /// <summary>

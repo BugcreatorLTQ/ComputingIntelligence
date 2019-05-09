@@ -26,6 +26,25 @@ namespace ComputingIntelligence
         public float[] Data { get; set; }
 
         /// <summary>
+        /// 索引器
+        /// </summary>
+        /// <param name="r">行</param>
+        /// <param name="c">列</param>
+        /// <returns>值</returns>
+        public float this[int r,int c]
+        {
+            set
+            {
+                Data[r * Column + c] = value;
+            }
+
+            get
+            {
+                return Data[r * Column + c];
+            }
+        }
+
+        /// <summary>
         /// 获取转置矩阵
         /// </summary>
         public Matrix T { get { return GetT(); } }

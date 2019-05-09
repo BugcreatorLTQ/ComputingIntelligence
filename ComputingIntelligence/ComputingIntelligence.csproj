@@ -36,8 +36,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AntOptimization.cs" />
     <Compile Include="BPNeuralNetwork.cs" />
     <Compile Include="DNA.cs" />
+    <Compile Include="DNAT.cs" />
     <Compile Include="DrawForm.cs">
       <SubType>Form</SubType>
     </Compile>

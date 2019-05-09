@@ -134,8 +134,18 @@ namespace ComputingIntelligence
         public void Comparison(Matrix input,Matrix output)
         {
             Console.WriteLine("检验开始");
-            Console.WriteLine(output - GetResult(input));
+            Matrix temp = output - GetResult(input);
+            Console.WriteLine(temp);
+            int size = 0;
+            for(int i = 0; i < temp.Data.Length; i++)
+            {
+                if (temp.Data[i] < 0.5)
+                {
+                    size++;
+                }
+            }
             Console.WriteLine("检验结束");
+            Console.WriteLine("正确率：" + (double)size / temp.Data.Length);
         }
 
     }

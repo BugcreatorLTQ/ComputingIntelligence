@@ -9,14 +9,14 @@ namespace ComputingIntelligence
     class TestDNA : DNA
     {
 
-        class DataA : DNAData
+        class DecData : DNAData
         {
 
             public int Data { get; set; }
 
             public override void Copy(DNAData src)
             {
-                Data = (src as DataA).Data;
+                Data = (src as DecData).Data;
             }
 
             public override string ToCode()
@@ -31,64 +31,31 @@ namespace ComputingIntelligence
 
             protected override DNAData GetRandomData()
             {
-                return new DataA { Data = random.Next(10) };
+                return new DecData { Data = random.Next(10) };
             }
         }
-
-        class DataB : DNAData
-        {
-
-            public bool Data { get; set; }
-
-            public override void Copy(DNAData src)
-            {
-                Data = (src as DataB).Data;
-            }
-
-            public override string ToCode()
-            {
-                return Data ? "1" : "0";
-            }
-
-            public override void Variation()
-            {
-                Data = random.Next(2) == 1;
-            }
-
-            protected override DNAData GetRandomData()
-            {
-                return new DataB { Data = random.Next(2) == 1 };
-            }
-        }
-
         protected override DNA GetRandomDNA()
         {
             TestDNA temp = new TestDNA();
-            temp.AddRandomDNA(3, new DataA());
-            temp.AddRandomDNA(5, new DataB());
+            temp.AddRandomDNA(7, new DecData());
             return temp;
         }
 
         protected override string GetSolution()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach(DNAData x in Data)
-            {
-                builder.Append(x.ToCode() + ".");
-            }
-            return builder.ToString();
+            return Value.ToString();
         }
 
         protected override double GetValue()
         {
             double sum = 0;
-            foreach (DNAData x in Data)
+            double step = 1;
+            for (int i = 0; i < Data.Length; i++)
             {
-                if (x is DataA)
-                    sum += (x as DataA).Data;
-                if (x is DataB)
-                    sum += (x as DataB).Data ? 1 : 0;
+                sum += (Data[i] as DecData).Data * step;
+                step *= 0.1;
             }
+            sum = 10 * Math.Sin(5 * sum) + 7 * Math.Cos(4 * sum);
             return sum;
         }
     }

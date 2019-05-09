@@ -65,16 +65,23 @@ namespace ComputingIntelligence
             for(int i = 0; i < Size; i++)
             {
                 temp[i] = DNAS[i].RandomDNA;
-                temp[i].Copy(DNAS[i]);
             }
-            // 采用随机锦标赛选取Size个个体
-            for (int i = 0; i < Size; i++)
+            int max = 0;
+            // 采用随机锦标赛选取Size-1个个体
+            for (int i = 1; i < Size; i++)
             {
+                // 保留最优解
+                if (DNAS[max].Value < DNAS[i].Value)
+                {
+                    max = i;
+                }
                 DNA A, B;
-                A = temp[random.Next(Size)];
-                B = temp[random.Next(Size)];
-                DNAS[i].Copy(A.Value > B.Value ? A : B);
+                A = DNAS[i];
+                B = DNAS[random.Next(Size)];
+                temp[i].Copy(A.Value > B.Value ? A : B);
             }
+            temp[0].Copy(DNAS[max]);
+            DNAS = temp;
         }
 
         /// <summary>
@@ -82,13 +89,13 @@ namespace ComputingIntelligence
         /// </summary>
         private void Cross()
         {
-            for (int i = 0; i < Size; i++)
+            for (int i = 1; i < Size; i++)
             {
                 // Cross_e的概率交叉
                 if (random.NextDouble() < Cross_e)
                 {
                     // 随机选取种群中另一个DNA
-                    int other = random.Next(Size);
+                    int other = random.Next(Size - 1) + 1;
                     // 交叉
                     DNAS[i].Cross(ref DNAS[other]);
                 }
@@ -100,7 +107,7 @@ namespace ComputingIntelligence
         /// </summary>
         private void Variation()
         {
-            for (int i = 0; i < Variation_e; i++)
+            for (int i = 1; i < Variation_e; i++)
             {
                 // Variation_e的概率变异
                 if (random.NextDouble() < Variation_e)
