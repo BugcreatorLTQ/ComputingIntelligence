@@ -16,27 +16,16 @@ namespace ComputingIntelligence
         /// <param name="args">参数</param>
         public static void Main(string[] args)
         {
-            _51();
-            //Genetic_Test();
+            Genetic_Test();
             //Single_Linear();
             //BP_Curve();
             //BP_Iris();
         }
 
-        static void _51()
-        {
-            Matrix data = MatrixFileIO.ReadMatrixOfFile("data.txt");
-            data = data.T;
-            Matrix input = data.GetSubMatrix(0, 2);
-            Matrix output = data.GetSubMatrix(2, 3);
-            BPNeuralNetwork bp = new BPNeuralNetwork(input, output, new TanSigFun(), new LinearFun());
-            bp.Train(60);
-        }
-
         static void Genetic_Test()
         {
-            Genetic genetic = new Genetic(200, 0.7, 0.8, new DNAT());
-            genetic.Train(1000);
+            Genetic genetic = new Genetic(200, 0.7, 0.8, new TestDNA());
+            genetic.Train(200);
         }
 
         /// <summary>
@@ -51,7 +40,7 @@ namespace ComputingIntelligence
             Matrix input = data_train.GetSubMatrix(0, data_train.Row - 3);
             Matrix output = data_train.GetSubMatrix(data_train.Row - 3, data_train.Row);
             BPNeuralNetwork bp = new BPNeuralNetwork(input, output, new TanSigFun(), new LinearFun(0.5f));
-            bp.Train(500);
+            bp.Train(100);
             input = data_comp.GetSubMatrix(0, data_comp.Row - 3);
             output = data_comp.GetSubMatrix(data_comp.Row - 3, data_comp.Row);
             bp.Comparison(input, output);
@@ -79,7 +68,7 @@ namespace ComputingIntelligence
             data = temp * data;
             temp = new Matrix(2, 1, new float[] { 0, 1 });
             data += temp * output;
-            Application.Run(new DrawForm(data));
+            Application.Run(new DrawForm(data, false));
         }
 
         /// <summary>

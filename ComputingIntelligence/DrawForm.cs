@@ -18,6 +18,11 @@ namespace ComputingIntelligence
         private readonly int start_y = 45;
 
         /// <summary>
+        /// 散点图标记
+        /// </summary>
+        public bool isPoint;
+
+        /// <summary>
         /// 最大值
         /// </summary>
         private float min;
@@ -36,10 +41,12 @@ namespace ComputingIntelligence
         /// 创建一个绘图窗口
         /// </summary>
         /// <param name="matrix">要绘图的数据矩阵</param>
-        public DrawForm(Matrix matrix)
+        /// <param name="_isPoint">是否为散点图</param>
+        public DrawForm(Matrix matrix, bool _isPoint = true)
         {
             InitializeComponent();
             Data = matrix;
+            this.isPoint = _isPoint;
             SetVal();
         }
 
@@ -72,6 +79,7 @@ namespace ComputingIntelligence
         /// <param name="e">参数</param>
         private void DrawForm_Load(object sender, EventArgs e)
         {
+            this.BackColor = Color.White;
         }
 
         /// <summary>
@@ -105,17 +113,33 @@ namespace ComputingIntelligence
             // 第i列
             for (int i = 0; i < Data.Column; i++)
             {
-                // 第j行
-                for (int j = 0; j < Data.Row; j++)
+                if (isPoint)
                 {
-                    // 决定点绘制的位置
-                    Point A = new Point(Width * i / Data.Column + start_x, GetY(min, max, datas[i].Data[j]));
-                    Point B = new Point(A.X - 1, A.Y - 1);
-                    Point C = new Point(A.X - 1, A.Y);
-                    Point D = new Point(A.X, A.Y - 1);
-                    // 绘制(点)直线
-                    g.DrawLine(pen, A, B);
-                    g.DrawLine(pen, C, D);
+                    // 第j行
+                    for (int j = 0; j < Data.Row; j++)
+                    {
+                        // 决定点绘制的位置
+                        Point A = new Point(Width * i / Data.Column + start_x, GetY(min, max, datas[i].Data[j]));
+                        Point B = new Point(A.X - 1, A.Y - 1);
+                        Point C = new Point(A.X - 1, A.Y);
+                        Point D = new Point(A.X, A.Y - 1);
+                        // 绘制(点)直线
+                        g.DrawLine(pen, A, B);
+                        g.DrawLine(pen, C, D);
+                    }
+                }
+                else
+                {
+                    if (i == Data.Column - 1)
+                    {
+                        break;
+                    }
+                    for (int j = 0; j < Data.Row; j++)
+                    {
+                        Point A = new Point(Width * i / Data.Column + start_x, GetY(min, max, datas[i].Data[j]));
+                        Point B = new Point(Width * (i + 1) / Data.Column + start_x, GetY(min, max, datas[i + 1].Data[j]));
+                        g.DrawLine(pen, A, B);
+                    }
                 }
             }
         }

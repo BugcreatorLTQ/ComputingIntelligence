@@ -133,8 +133,9 @@ namespace ComputingIntelligence
                 // 选择
                 Selection();
                 // 输出
-                ShowSolution();
+                ShowDNA();
             }
+            ShowSolution();
         }
 
         /// <summary>

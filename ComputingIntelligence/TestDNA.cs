@@ -43,7 +43,15 @@ namespace ComputingIntelligence
 
         protected override string GetSolution()
         {
-            return Value.ToString();
+            double x = 0;
+            double step = 1;
+            for (int i = 0; i < Data.Length; i++)
+            {
+                x += (Data[i] as DecData).Data * step;
+                step *= 0.1;
+            }
+            double res = 10 * Math.Sin(5 * x) + 7 * Math.Cos(4 * x);
+            return "x: " + x + " result: " + res;
         }
 
         protected override double GetValue()

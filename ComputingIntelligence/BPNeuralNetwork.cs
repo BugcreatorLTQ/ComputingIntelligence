@@ -139,7 +139,7 @@ namespace ComputingIntelligence
             int size = 0;
             for(int i = 0; i < temp.Data.Length; i++)
             {
-                if (temp.Data[i] < 0.5)
+                if (temp.Data[i] < 0.1)
                 {
                     size++;
                 }
